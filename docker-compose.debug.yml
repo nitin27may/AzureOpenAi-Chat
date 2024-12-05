@@ -1,0 +1,49 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Debug.Dockerfile
+    command: ["npm", "run", "start:debug"]
+    ports:
+      - 4200:4200
+      - 49153:49153
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    depends_on:
+      - api
+    networks:
+      - mssql_network
+ 
+  api:
+    build:
+      context: ./api
+      dockerfile: Debug.Dockerfile
+    command: ["dotnet", "watch", "--project", "GenAI.Api.csproj", "run", "--urls", "http://0.0.0.0:5187"] 
+    ports:
+      - 5187:5187 
+    environment:
+      - ASPNETCORE__ENVIRONMENT=${ENVIRONMENT}
+      - DOTNET_SKIP_POLICY_LOADING=false
+      - ConnectionStrings__AzureStorage=${AZURE_STORAGE_CONNECTION_STRING}
+      - DocumentIntelligence__Endpoint=${DOCUMENTINTELLIGENCE_Endpoint}
+      - DocumentIntelligence__ApiKey=${DOCUMENTINTELLIGENCE_APIKEY}
+      - DocumentIntelligence__ModelId=${DOCUMENTINTELLIGENCE_MODELID}
+      - OpenAI__Endpoint=${AZURE_OPENAI_ENDPOINT}
+      - OpenAI__ApiKey=${AZURE_OPENAI_APIKEY}
+    volumes:
+      - ./api:/app
+      - ~/.vsdbg:/remote_debugger:rw
+
+    networks:
+      - mssql_network
+      
+
+volumes:
+  mssql_data: # Named volume to persist data
+
+networks:
+  mssql_network:
+    driver: bridge

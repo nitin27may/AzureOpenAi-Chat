@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="message-container" #scrollMe>
+    <div
+      class="message"
+      *ngFor="let message of messages"
+      [class.user-message]="message.user"
+      [class.system-message]="!message.user"
+      [@slideIn]="!message.user ? 'in' : null"
+    >
+      <div class="bubble" *ngIf="!message.user">
+        <markdown
+          clipboard
+          [data]="message.content"
+          lineNumbers
+          [start]="5"
+        ></markdown>
+      </div>
+      <div class="bubble" *ngIf="message.user" [innerHTML]="message.content">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isLoading" class="loader-container">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="50">
+    </mat-progress-spinner>
+  </div>
+  <div class="input-container">
+    <app-form-field
+      type="text"
+      [control]="form.controls.message"
+      (nextStepEvent)="handleNewInfo($event)"
+    ></app-form-field>
+  </div>
+</div>

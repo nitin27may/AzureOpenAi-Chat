@@ -1,0 +1,17 @@
+<div class="file-list">
+  <div *ngFor="let file of selectedFiles" class="file-item">
+    <img *ngIf="file.type.startsWith('image/')" [src]="file.name" alt="{{ file.name }}" class="thumbnail" />
+    <mat-icon *ngIf="!file.type.startsWith('image/')">insert_drive_file</mat-icon>
+    <span>{{ file.name }}</span>
+  </div>
+</div>
+<form class="input-container">
+  <mat-form-field appearance="fill">
+    <textarea matInput type="text" [formControl]="control" required=""></textarea>
+  </mat-form-field>
+  <input type="file" #fileInput (change)="handleFileInput($event)" multiple style="display: none" />
+  <button mat-icon-button (click)="handleSend()"><mat-icon>send</mat-icon></button>
+  <button mat-icon-button (click)="fileInput.click()">
+    <mat-icon>attach_file</mat-icon>
+  </button>
+</form>

@@ -1,0 +1,105 @@
+.container {
+  height: 95vh;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5vh;
+}
+
+.message-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.input-container {
+  padding: 10px;
+}
+
+.message {
+  width: 100%;
+  display: flex;
+  margin: 10px 0px;
+  -webkit-animation: slidein-bottom 0.5s linear;
+  animation: slidein-bottom 0.5s linear;
+}
+
+.bubble {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.5s ease-in-out;
+}
+
+.user-message {
+  justify-content: flex-end;
+  color: white;
+}
+
+.user-message > .bubble {
+  background-color: rgb(52, 70, 238);
+  color: white;
+}
+
+.system-message > .bubble {
+  background-color: white;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center;
+}
+
+@keyframes slidein-bottom {
+  0% {
+    margin-top: 30px;
+    margin-bottom: -10px;
+    opacity: 0;
+  }
+  90% {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.markdown-clipboard-toolbar {
+  opacity: 0;
+  transition: opacity 250ms ease-out;
+}
+
+.markdown-clipboard-toolbar.hover {
+  opacity: 1;
+}
+
+markdown {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+ }
+ markdown h1, markdown h2, markdown h3 {
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  color: #444;
+ }
+ markdown a {
+  color: #1e88e5;
+  text-decoration: none;
+ }
+ markdown a:hover {
+  text-decoration: underline;
+ }
+ markdown code {
+  background-color: #f5f5f5;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+ }
+ .loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+}

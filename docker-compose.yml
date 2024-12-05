@@ -1,0 +1,43 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    depends_on:
+      - api
+    networks:
+      - genai_network
+ 
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile    
+    environment:
+      - ASPNETCORE__ENVIRONMENT=${ENVIRONMENT}
+      - DOTNET_SKIP_POLICY_LOADING=false
+      - ConnectionStrings__AzureStorage=${AZURE_STORAGE_CONNECTION_STRING}
+      - DocumentIntelligence__Endpoint=${DOCUMENTINTELLIGENCE_Endpoint}
+      - DocumentIntelligence__ApiKey=${DOCUMENTINTELLIGENCE_APIKEY}
+      - DocumentIntelligence__ModelId=${DOCUMENTINTELLIGENCE_MODELID}
+      - OpenAI__Endpoint=${AZURE_OPENAI_ENDPOINT}
+      - OpenAI__ApiKey=${AZURE_OPENAI_APIKEY}
+
+    networks:
+      - genai_network
+      
+  nginx: #name of the fourth service
+    build: loadbalancer # specify the directory of the Dockerfile
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80" #specify ports forewarding
+    depends_on:
+      - frontend
+      - api
+    networks:
+      - genai_network
+networks:
+  genai_network:
+    driver: bridge
