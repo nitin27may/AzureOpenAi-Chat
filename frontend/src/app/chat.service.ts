@@ -24,7 +24,7 @@ export class ChatService {
   
     return new Observable<string>((observer) => {
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', `${this.apiUrl}/compare`, true);
+      xhr.open('POST', `${this.apiUrl}/chathistory?sessionId=1nks1`, true);
       xhr.setRequestHeader('Accept', 'text/plain'); // Expect a plain text streaming response
   
       let lastPosition = 0;

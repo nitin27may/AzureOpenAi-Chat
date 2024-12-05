@@ -1,5 +1,7 @@
+using System.Text.Json;
 using DocumentFormat.OpenXml.Packaging;
 using GenAI.Api.Extensions;
+using GenAI.Api.Models;
 using GenAI.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +14,7 @@ public class FormController : ControllerBase
     private readonly IBlobService _blobService;
     private readonly IDocumentIntelligenceService _documentIntelligenceService;
     private readonly IOpenApiService _openApiService;
+    private readonly IChatSessionService _chatSessionService;
     private readonly ILogger _logger;
     private readonly IConfiguration _configuration;
 
@@ -19,12 +22,14 @@ public class FormController : ControllerBase
         ILogger<FormController> logger,
         IDocumentIntelligenceService documentIntelligenceService,
          IOpenApiService openApiService,
+          IChatSessionService chatSessionService,
         IConfiguration configuration)
     {
         _blobService = blobService;
         _logger = logger;
         _documentIntelligenceService = documentIntelligenceService;
         _openApiService = openApiService;
+        _chatSessionService = chatSessionService;
         _configuration = configuration;
     }
 
@@ -85,6 +90,33 @@ public class FormController : ControllerBase
 
         // Send the prompt to OpenAI for streaming completion
         await _openApiService.GetChatStreamCompletion(finalPrompt, Response.Body, _logger);
+    }
+
+    [HttpPost("chathistory")]
+    public async Task CompareFilesHistory([FromForm] List<IFormFile> files, [FromForm] string customPrompt = "Compare the texts and identify the differences.", [FromQuery] string sessionId = null)
+    {
+        sessionId ??= Guid.NewGuid().ToString();
+        string prompt = string.Empty;
+
+        if (files != null && files.Any())
+        {
+            for (int i = 0; i < files.Count; i++)
+            {
+                var fileText = await ExtractTextFromFile(files[i]);
+                prompt += $"\n\nDocument {i + 1}:\n{fileText}";
+            }
+        }
+
+        var chatSession = _chatSessionService.GetOrCreateSession(sessionId);
+        var finalPrompt = $"{customPrompt}{prompt}";
+        // Get relevant history for context
+        var relevantHistory = await _chatSessionService.GetRelevantHistory(sessionId, finalPrompt);
+
+        Response.ContentType = "text/plain";
+        Response.Headers.Add("Cache-Control", "no-cache");
+        Response.Headers.Add("Transfer-Encoding", "chunked");
+
+        await _openApiService.GetChatStreamCompletionWithHistory(relevantHistory, Response.Body, sessionId, _logger);
     }
 
     [HttpGet("querystream")]
