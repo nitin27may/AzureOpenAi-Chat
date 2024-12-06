@@ -44,7 +44,7 @@ dotnet restore
 
 #### Add Configuration
 
-Create an `appsettings.json` file in the `GenAI.Api` project root and add your Azure configurations:
+Update value in `appsettings.Development.json` file in the `GenAI.Api` project root :
 
 ```json
   "ConnectionStrings": { 
