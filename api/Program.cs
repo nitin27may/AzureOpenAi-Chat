@@ -11,9 +11,10 @@ builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IDocumentIntelligenceService, DocumentIntelligenceService>();
 builder.Services.AddScoped<IOpenApiService, OpenApiService>();
 
-// builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDb"));
-// builder.Services.AddSingleton<ICosmosDbContainerFactory, CosmosDbContainerFactory>();
-// builder.Services.AddSingleton<ICosmosDbService, CosmosDbService>();
+builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDbSettings"));
+builder.Services.AddSingleton<ICosmosMessageService, CosmosMessageService>();
+
+
 
 builder.Services.AddCors(options =>
 {

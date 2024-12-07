@@ -85,8 +85,8 @@ public class FormController : ControllerBase
         var finalPrompt = $"{customPrompt}{prompt}";
 
         Response.ContentType = "text/plain";
-        Response.Headers.Add("Cache-Control", "no-cache");
-        Response.Headers.Add("Transfer-Encoding", "chunked");
+        Response.Headers.Append("Cache-Control", "no-cache");
+        Response.Headers.Append("Transfer-Encoding", "chunked");
 
         // Send the prompt to OpenAI for streaming completion
         await _openApiService.GetChatStreamCompletion(finalPrompt, Response.Body, _logger);
@@ -113,8 +113,8 @@ public class FormController : ControllerBase
         var relevantHistory = await _chatSessionService.GetRelevantHistory(sessionId, finalPrompt);
 
         Response.ContentType = "text/plain";
-        Response.Headers.Add("Cache-Control", "no-cache");
-        Response.Headers.Add("Transfer-Encoding", "chunked");
+        Response.Headers.Append("Cache-Control", "no-cache");
+        Response.Headers.Append("Transfer-Encoding", "chunked");
 
         await _openApiService.GetChatStreamCompletionWithHistory(relevantHistory, Response.Body, sessionId, _logger);
     }
@@ -124,8 +124,8 @@ public class FormController : ControllerBase
     public async Task StreamChatResponse([FromQuery] string prompt)
     {
         Response.ContentType = "text/plain";
-        Response.Headers.Add("Cache-Control", "no-cache");
-        Response.Headers.Add("Transfer-Encoding", "chunked");
+        Response.Headers.Append("Cache-Control", "no-cache");
+        Response.Headers.Append("Transfer-Encoding", "chunked");
 
         try
         {
