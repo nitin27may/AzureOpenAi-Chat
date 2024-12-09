@@ -103,7 +103,7 @@ public class FormController : ControllerBase
             for (int i = 0; i < files.Count; i++)
             {
                 var fileText = await ExtractTextFromFile(files[i]);
-                prompt += $"\n\nDocument {i + 1}:\n{fileText}";
+                prompt += $"\n\n{files[i].Name}'s contents:\n{fileText}";
             }
         }
 
