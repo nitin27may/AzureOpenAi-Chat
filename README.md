@@ -15,6 +15,9 @@ The application allows users to chat, upload documents, and receive real-time re
 - **File Upload and Analysis**: Upload documents (PDFs and Word files) and extract relevant content using Azure Form Recognizer.
 - **Document Comparison**: Upload multiple documents for detailed comparison using Azure's AI models.
 
+## Upcoming Feature
+- [ ] Maintaining history context for a conversation
+
 ## Prerequisites
 
 - .NET 9 SDK
