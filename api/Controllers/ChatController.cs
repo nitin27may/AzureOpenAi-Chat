@@ -9,7 +9,7 @@ namespace GenAI.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FormController : ControllerBase
+public class ChatController : ControllerBase
 {
     private readonly IBlobService _blobService;
     private readonly IDocumentIntelligenceService _documentIntelligenceService;
@@ -18,8 +18,8 @@ public class FormController : ControllerBase
     private readonly ILogger _logger;
     private readonly IConfiguration _configuration;
 
-    public FormController(IBlobService blobService,
-        ILogger<FormController> logger,
+    public ChatController(IBlobService blobService,
+        ILogger<ChatController> logger,
         IDocumentIntelligenceService documentIntelligenceService,
          IOpenApiService openApiService,
           IChatSessionService chatSessionService,
@@ -93,7 +93,7 @@ public class FormController : ControllerBase
     }
 
     [HttpPost("chathistory")]
-    public async Task CompareFilesHistory([FromForm] List<IFormFile> files, [FromForm] string customPrompt = "Compare the texts and identify the differences.", [FromQuery] string sessionId = null)
+    public async Task ChatHistory([FromForm] List<IFormFile> files, [FromForm] string customPrompt, [FromQuery] string sessionId)
     {
         sessionId ??= Guid.NewGuid().ToString();
         string prompt = string.Empty;
@@ -107,7 +107,6 @@ public class FormController : ControllerBase
             }
         }
 
-        var chatSession = _chatSessionService.GetOrCreateSession(sessionId);
         var finalPrompt = $"{customPrompt}{prompt}";
         // Get relevant history for context
         var relevantHistory = await _chatSessionService.GetRelevantHistory(sessionId, finalPrompt);
