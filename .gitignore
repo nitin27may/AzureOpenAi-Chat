@@ -17,3 +17,6 @@ Thumbs.db
 .vs
 bin
 obj
+
+# Angular build output
+dist/

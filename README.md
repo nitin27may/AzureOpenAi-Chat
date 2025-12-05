@@ -4,8 +4,8 @@
 
 This repository contains a Generative AI-driven chat application built with the following technologies:
 
-- **Backend**: .NET 9 API integrated with Azure OpenAI, Azure Form Recognizer, and Azure Blob Storage.
-- **Frontend**: Angular (latest version), using Angular Material for UI components and `ngx-markdown` for rendering AI-generated responses.
+- **Backend**: .NET 10 API integrated with Azure OpenAI, Azure Form Recognizer, and Azure Blob Storage.
+- **Frontend**: Angular 21, using Angular Material for UI components and `ngx-markdown` for rendering AI-generated responses.
 
 The application allows users to chat, upload documents, and receive real-time responses from Azure OpenAI. It is designed to highlight Azure's AI capabilities and the power of integrating cloud-based document processing and file storage.
 
@@ -20,9 +20,9 @@ The application allows users to chat, upload documents, and receive real-time re
 
 ## Prerequisites
 
-- .NET 9 SDK
+- .NET 10 SDK
 - Node.js (with npm) - Angular CLI requires Node.js.
-- Angular CLI (latest version)
+- Angular CLI (v21 or later)
 - Azure Subscription (for using Azure OpenAI, Blob Storage, and Form Recognizer services)
 - Visual Studio or VS Code (recommended for .NET and Angular development)
 
