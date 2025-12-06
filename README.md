@@ -31,8 +31,8 @@ The application allows users to chat, upload documents, and receive real-time re
 ### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/your-username/genai-chat.git
-cd genai-chat
+git clone https://github.com/nitin27may/AzureOpenAi-Chat.git
+cd AzureOpenAi-Chat
 ```
 
 ### 2. Backend Setup (API)
