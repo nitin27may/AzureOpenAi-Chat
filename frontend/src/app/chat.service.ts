@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from "../environments/environment";
@@ -7,9 +7,8 @@ import { environment } from "../environments/environment";
   providedIn: 'root'
 })
 export class ChatService {
-  private apiUrl = `${environment.apiUrl}/Form`;
-
-  constructor(private http: HttpClient) { }
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/Form`;
 
   sendMessage(prompt: string, files?: File[]): Observable<string> {
     const formData = new FormData();

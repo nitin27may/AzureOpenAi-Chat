@@ -1,5 +1,4 @@
-import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -8,37 +7,34 @@ import { MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: 'app-form-field',
-  imports: [CommonModule, FormsModule,ReactiveFormsModule, MatFormFieldModule,MatInputModule,MatButtonModule, MatIconModule],
+  imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './form-field.component.html',
   styleUrl: './form-field.component.css'
 })
 export class FormFieldComponent {
-  @Input() step!: number;
-  @Input() type! : string;
-  @Input() control! : FormControl;
-  @Input() selectOptions! : string[] | undefined;
+  readonly step = input<number>();
+  readonly type = input<string>();
+  readonly control = input.required<FormControl>();
+  readonly selectOptions = input<string[]>();
 
-  @Output() nextStepEvent = new EventEmitter();
-  selectedFiles: File[] = [];
-  handleSend () {
-    const message = this.control.value;
-    if (message || this.selectedFiles.length > 0) {
-      this.nextStepEvent.emit({ message, files: this.selectedFiles });
-      this.control.reset();
-      this.selectedFiles = [];
-     // (fileInput as HTMLInputElement).value = '';
-    }
-
-    if (this.control.valid) {
-      this.nextStepEvent.emit(this.control.value);
-    } else {
-      console.log(this.control.errors);
+  readonly nextStepEvent = output<{ message: string; files?: File[] }>();
+  readonly selectedFiles = signal<File[]>([]);
+  handleSend(): void {
+    const control = this.control();
+    const message = control.value;
+    const files = this.selectedFiles();
+    
+    if (message || files.length > 0) {
+      this.nextStepEvent.emit({ message, files });
+      control.reset();
+      this.selectedFiles.set([]);
     }
   }
-  handleFileInput(event: Event) {
+
+  handleFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFiles = Array.from(input.files);
+      this.selectedFiles.set(Array.from(input.files));
     }
   }
 }

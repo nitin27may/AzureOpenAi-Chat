@@ -5,7 +5,6 @@
 node_modules/
 npm-debug.log
 yarn-error.log
-
 # Logs
 logs
 *.log
@@ -20,3 +19,6 @@ obj
 
 # Angular build output
 dist/
+
+# Angular cache
+.angular/
